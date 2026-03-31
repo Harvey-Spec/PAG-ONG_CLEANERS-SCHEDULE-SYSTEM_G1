@@ -1,0 +1,122 @@
+import java.util.*;
+
+public class Main {
+
+    static ArrayList<String> names = new ArrayList<>();
+    static ArrayList<String> documents = new ArrayList<>();
+    static ArrayList<String> status = new ArrayList<>();
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\n=== Barangay Cugman Document Request System ===");
+            System.out.println("1. Request Document");
+            System.out.println("2. View Requests");
+            System.out.println("3. Update Request Status (Admin)");
+            System.out.println("4. Exit");
+            System.out.print("Choose: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // clear buffer
+
+            switch (choice) {
+                case 1:
+                    requestDocument(scanner);
+                    break;
+                case 2:
+                    viewRequests();
+                    break;
+                case 3:
+                    updateStatus(scanner);
+                    break;
+                case 4:
+                    System.out.println("Exiting system...");
+                    return;
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        }
+    }
+
+    // Request Document
+    public static void requestDocument(Scanner scanner) {
+        System.out.print("Enter your name: ");
+        String name = scanner.nextLine();
+
+        System.out.println("Select Document Type:");
+        System.out.println("1. Barangay Clearance");
+        System.out.println("2. Certificate of Residency");
+        System.out.print("Choice: ");
+        int docChoice = scanner.nextInt();
+        scanner.nextLine();
+
+        String documentType = "";
+
+        if (docChoice == 1) {
+            documentType = "Barangay Clearance";
+        } else if (docChoice == 2) {
+            documentType = "Certificate of Residency";
+        } else {
+            System.out.println("Invalid choice!");
+            return;
+        }
+
+        names.add(name);
+        documents.add(documentType);
+        status.add("Pending");
+
+        System.out.println("Request submitted successfully!");
+    }
+
+    // View Requests
+    public static void viewRequests() {
+        if (names.isEmpty()) {
+            System.out.println("No requests found.");
+            return;
+        }
+
+        System.out.println("\n--- List of Requests ---");
+        for (int i = 0; i < names.size(); i++) {
+            System.out.println(i + ". Name: " + names.get(i)
+                    + " | Document: " + documents.get(i)
+                    + " | Status: " + status.get(i));
+        }
+    }
+
+    // Update Status
+    public static void updateStatus(Scanner scanner) {
+        viewRequests();
+
+        if (names.isEmpty()) return;
+
+        System.out.print("Enter request number to update: ");
+        int index = scanner.nextInt();
+        scanner.nextLine();
+
+        if (index < 0 || index >= names.size()) {
+            System.out.println("Invalid number!");
+            return;
+        }
+
+        System.out.println("Set Status:");
+        System.out.println("1. Approved");
+        System.out.println("2. Rejected");
+        System.out.println("3. Completed");
+        System.out.print("Choice: ");
+        int statusChoice = scanner.nextInt();
+
+        if (statusChoice == 1) {
+            status.set(index, "Approved");
+        } else if (statusChoice == 2) {
+            status.set(index, "Rejected");
+        } else if (statusChoice == 3) {
+            status.set(index, "Completed");
+        } else {
+            System.out.println("Invalid choice!");
+            return;
+        }
+
+        System.out.println("Status updated successfully!");
+    }
+}
