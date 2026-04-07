@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class BarangayCugmanSystem {
+public class example {
     static Scanner sc = new Scanner(System.in);
 
     static ArrayList<String> names = new ArrayList<>();
@@ -95,7 +95,7 @@ public class BarangayCugmanSystem {
             if (fullName.trim().isEmpty()) {
                 System.out.println("Invalid! Name cannot be empty.");
             } else if (!fullName.matches("[a-zA-Z .-]+")) {
-                System.out.println("Invalid! Only letters, spaces, dot (.), and hyphen (-) allowed.");
+                System.out.println("Invalid! Only letters allowed.");
             } else break;
         }
 
@@ -180,18 +180,18 @@ public class BarangayCugmanSystem {
 
     // ================= LOGIN =================
     static void loginResident() {
-        int index;
+        System.out.print("Username: ");
+        String user = sc.nextLine();
 
-        while (true) {
-            System.out.print("Username: ");
-            String user = sc.nextLine();
+        int index = usernames.indexOf(user);
 
-            index = usernames.indexOf(user);
-
-            if (index != -1) break;
-            else System.out.println("Invalid username! Try again.");
+        // 🔥 FIX: If not registered → go back
+        if (index == -1) {
+            System.out.println("Username not registered! Please register first.");
+            return;
         }
 
+        // Password loop only
         while (true) {
             System.out.print("Password: ");
             String pass = sc.nextLine();
