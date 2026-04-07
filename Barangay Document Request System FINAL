@@ -1,0 +1,313 @@
+import java.util.*;
+
+public class BarangayCugmanSystem {
+    static Scanner sc = new Scanner(System.in);
+
+    static ArrayList<String> names = new ArrayList<>();
+    static ArrayList<String> usernames = new ArrayList<>();
+    static ArrayList<String> passwords = new ArrayList<>();
+
+    static ArrayList<String> ages = new ArrayList<>();
+    static ArrayList<String> genders = new ArrayList<>();
+    static ArrayList<String> birthMonths = new ArrayList<>();
+    static ArrayList<String> civilStatuses = new ArrayList<>();
+    static ArrayList<String> addresses = new ArrayList<>();
+    static ArrayList<String> contacts = new ArrayList<>();
+
+    static ArrayList<String> docs = new ArrayList<>();
+    static ArrayList<String> status = new ArrayList<>();
+    static ArrayList<Integer> ownerIndex = new ArrayList<>();
+
+    public static void main(String[] args) {
+        while (true) {
+            System.out.println("\n=== BARANGAY SYSTEM ===");
+            System.out.println("1. Admin Login");
+            System.out.println("2. Resident");
+            System.out.println("3. Exit Program");
+            System.out.print("Choose: ");
+
+            int choice = readInt();
+
+            if (choice == 3) break;
+
+            if (choice == 1) adminMenu();
+            else if (choice == 2) residentPortal();
+        }
+    }
+
+    // ================= ADMIN =================
+    static void adminMenu() {
+        System.out.print("Username: ");
+        String user = sc.nextLine();
+
+        System.out.print("Password: ");
+        String pass = sc.nextLine();
+
+        if (user.equals("Admin") && pass.equals("1234")) {
+            adminWork();
+        } else {
+            System.out.println("Invalid Login!");
+        }
+    }
+
+    static void adminWork() {
+        while (true) {
+            System.out.println("\nADMIN MENU:");
+            System.out.println("1. View all requests");
+            System.out.println("2. Update status");
+            System.out.println("3. Logout");
+            System.out.print("Choose: ");
+
+            int choice = readInt();
+
+            if (choice == 1) showAll();
+            else if (choice == 2) updateStatus();
+            else if (choice == 3) return;
+        }
+    }
+
+    // ================= RESIDENT PORTAL =================
+    static void residentPortal() {
+        while (true) {
+            System.out.println("\nRESIDENT PORTAL:");
+            System.out.println("1. Register");
+            System.out.println("2. Login");
+            System.out.println("3. Back");
+            System.out.print("Choose: ");
+
+            int choice = readInt();
+
+            if (choice == 1) registerResident();
+            else if (choice == 2) loginResident();
+            else if (choice == 3) return;
+        }
+    }
+
+    // ================= REGISTER =================
+    static void registerResident() {
+        System.out.println("\n=== REGISTRATION ===");
+
+        String fullName;
+        while (true) {
+            System.out.print("Full Name: ");
+            fullName = sc.nextLine();
+
+            if (fullName.trim().isEmpty()) {
+                System.out.println("Invalid! Name cannot be empty.");
+            } else if (!fullName.matches("[a-zA-Z .-]+")) {
+                System.out.println("Invalid! Only letters, spaces, dot (.), and hyphen (-) allowed.");
+            } else break;
+        }
+
+        String username;
+        while (true) {
+            System.out.print("Username: ");
+            username = sc.nextLine();
+
+            if (!usernames.contains(username)) break;
+            else System.out.println("Username already taken!");
+        }
+
+        System.out.print("Password: ");
+        String password = sc.nextLine();
+
+        String age;
+        while (true) {
+            System.out.print("Age: ");
+            age = sc.nextLine();
+
+            if (age.matches("\\d+")) break;
+            else System.out.println("Numbers only!");
+        }
+
+        String gender;
+        while (true) {
+            System.out.print("Gender (Male/Female): ");
+            gender = sc.nextLine();
+
+            if (gender.equalsIgnoreCase("Male") || gender.equalsIgnoreCase("Female")) break;
+            else System.out.println("Invalid!");
+        }
+
+        String month;
+        while (true) {
+            System.out.print("Birth Month: ");
+            month = sc.nextLine();
+
+            if (month.matches("[a-zA-Z]+")) break;
+            else System.out.println("Letters only!");
+        }
+
+        String civil;
+        while (true) {
+            System.out.print("Civil Status (Single/Married/Widow): ");
+            civil = sc.nextLine();
+
+            if (civil.equalsIgnoreCase("Single") || civil.equalsIgnoreCase("Married") || civil.equalsIgnoreCase("Widow")) break;
+            else System.out.println("Invalid!");
+        }
+
+        String address;
+        while (true) {
+            System.out.print("Address: ");
+            address = sc.nextLine();
+
+            if (!address.trim().isEmpty()) break;
+            else System.out.println("Invalid!");
+        }
+
+        String contact;
+        while (true) {
+            System.out.print("Contact Number (09XXXXXXXXX): ");
+            contact = sc.nextLine();
+
+            if (contact.matches("^09\\d{9}$")) break;
+            else System.out.println("Invalid contact!");
+        }
+
+        names.add(fullName);
+        usernames.add(username);
+        passwords.add(password);
+        ages.add(age);
+        genders.add(gender);
+        birthMonths.add(month);
+        civilStatuses.add(civil);
+        addresses.add(address);
+        contacts.add(contact);
+
+        System.out.println("Registered successfully!");
+    }
+
+    // ================= LOGIN =================
+    static void loginResident() {
+        int index;
+
+        while (true) {
+            System.out.print("Username: ");
+            String user = sc.nextLine();
+
+            index = usernames.indexOf(user);
+
+            if (index != -1) break;
+            else System.out.println("Invalid username! Try again.");
+        }
+
+        while (true) {
+            System.out.print("Password: ");
+            String pass = sc.nextLine();
+
+            if (passwords.get(index).equals(pass)) {
+                System.out.println("Login successful!");
+                residentMenu(index);
+                return;
+            } else {
+                System.out.println("Wrong password! Try again.");
+            }
+        }
+    }
+
+    // ================= RESIDENT MENU =================
+    static void residentMenu(int index) {
+        while (true) {
+            System.out.println("\nRESIDENT MENU:");
+            System.out.println("1. Request document");
+            System.out.println("2. My requests");
+            System.out.println("3. Logout");
+            System.out.print("Choose: ");
+
+            int choice = readInt();
+
+            if (choice == 1) requestDoc(index);
+            else if (choice == 2) showMyRequests(index);
+            else if (choice == 3) return;
+        }
+    }
+
+    static void requestDoc(int index) {
+        System.out.println("\n1. Barangay Clearance 2. Barangay Permit 3. Certificate of Residency 4. Certificate of Indigency");
+        int choice = readInt();
+
+        String doc = "";
+        if (choice == 1) doc = "Barangay Clearance";
+        else if (choice == 2) doc = "Barangay Permit";
+        else if (choice == 3) doc = "Certificate of Residency";
+        else if (choice == 4) doc = "Certificate of Indigency";
+        else return;
+
+        docs.add(doc);
+        status.add("Pending");
+        ownerIndex.add(index);
+
+        System.out.println("Request sent!");
+    }
+
+    static void showMyRequests(int index) {
+        boolean found = false;
+
+        System.out.println("\n=== MY REQUESTS ===");
+
+        for (int i = 0; i < docs.size(); i++) {
+            if (ownerIndex.get(i) == index) {
+                System.out.println((i + 1) + ". " + docs.get(i) + " - " + status.get(i));
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No requests yet.");
+        }
+    }
+
+    static void showAll() {
+        if (docs.isEmpty()) {
+            System.out.println("\nNo request found.");
+            return;
+        }
+
+        for (int i = 0; i < docs.size(); i++) {
+            int idx = ownerIndex.get(i);
+
+            System.out.println("\nRequest #" + (i + 1));
+            System.out.println("Name: " + names.get(idx));
+            System.out.println("Address: " + addresses.get(idx));
+            System.out.println("Document: " + docs.get(i));
+            System.out.println("Status: " + status.get(i));
+
+            if (addresses.get(idx).toLowerCase().contains("cugman")) {
+                System.out.println("✔ VALID RESIDENT");
+            }
+        }
+    }
+
+    static void updateStatus() {
+        if (docs.isEmpty()) {
+            System.out.println("\nNo request found.");
+            return;
+        }
+
+        showAll();
+        System.out.print("Request number: ");
+        int num = readInt() - 1;
+
+        if (num < 0 || num >= docs.size()) {
+            System.out.println("Invalid request number.");
+            return;
+        }
+
+        System.out.println("1. Approve  2. Reject");
+        int choice = readInt();
+
+        if (choice == 1) status.set(num, "Approved");
+        else if (choice == 2) status.set(num, "Rejected");
+    }
+
+    static int readInt() {
+        while (true) {
+            try {
+                return Integer.parseInt(sc.nextLine());
+            } catch (Exception e) {
+                System.out.print("Enter number only: ");
+            }
+        }
+    }
+}
